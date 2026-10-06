@@ -1,0 +1,2 @@
+# Copy to terraform.tfvars and set your own public IP (curl ifconfig.me), keeping /32.
+ssh_cidr = "203.0.113.10/32"
