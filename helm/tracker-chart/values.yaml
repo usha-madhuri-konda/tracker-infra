@@ -1,0 +1,14 @@
+replicaCount: 2
+
+image:
+  repository: ushamadhurikonda/tracker-app
+  tag: v0.1.0
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  port: 5000
+
+postgres:
+  host: tracker-db-service
+  db: trackerdb
