@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-db
+  template:
+    metadata:
+      labels:
+        app: tracker-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tracker-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: tracker-db-config
+                  key: POSTGRES_DB
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracker-db-service
+spec:
+  selector:
+    app: tracker-db
+  ports:
+    - port: 5432
+      targetPort: 5432
