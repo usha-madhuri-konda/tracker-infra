@@ -1,0 +1,30 @@
+- name: Install Docker and the Python Docker library
+  ansible.builtin.apt:
+    name: [docker.io, python3-docker]
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+    lock_timeout: 120
+- name: Configure Docker log rotation
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart docker
+
+- name: Ensure Docker is running and starts on boot
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Let the ubuntu user run docker without sudo
+  ansible.builtin.user:
+    name: ubuntu
+    groups: docker
+    append: true
+
+- name: Apply Docker configuration changes now
+  ansible.builtin.meta: flush_handlers

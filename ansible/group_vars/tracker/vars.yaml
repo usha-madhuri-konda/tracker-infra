@@ -1,0 +1,3 @@
+app_image: ushamadhurikonda/tracker-app:v0.2.0
+postgres_db: trackerdb
+allow_registration: "true"

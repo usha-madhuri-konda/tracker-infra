@@ -1,0 +1,38 @@
+- name: Create the app network
+  community.docker.docker_network:
+    name: tracker-net
+
+- name: Run PostgreSQL
+  community.docker.docker_container:
+    name: tracker-db
+    image: postgres:16
+    restart_policy: unless-stopped
+    networks: [{name: tracker-net}]
+    volumes: ["tracker-db-data:/var/lib/postgresql/data"]
+    env:
+      POSTGRES_DB: "{{ postgres_db }}"
+      POSTGRES_PASSWORD: "{{ vault_postgres_password }}"
+  no_log: true
+
+- name: Wait until PostgreSQL accepts connections
+  ansible.builtin.command: docker exec tracker-db pg_isready -h 127.0.0.1 -U postgres
+  register: pg
+  until: pg.rc == 0
+  retries: 15
+  delay: 3
+  changed_when: false
+
+- name: Run the tracker app
+  community.docker.docker_container:
+    name: tracker
+    image: "{{ app_image }}"
+    restart_policy: unless-stopped
+    networks: [{name: tracker-net}]
+    published_ports: ["5000:5000"]
+    env:
+      SECRET_KEY: "{{ vault_secret_key }}"
+      POSTGRES_HOST: tracker-db
+      POSTGRES_DB: "{{ postgres_db }}"
+      POSTGRES_PASSWORD: "{{ vault_postgres_password }}"
+      ALLOW_REGISTRATION: "{{ allow_registration }}"
+  no_log: true

@@ -1,0 +1,6 @@
+- name: Configure the tracker host
+  hosts: tracker
+  become: true
+  roles:
+    - docker
+    - tracker
