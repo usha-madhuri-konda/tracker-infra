@@ -15,7 +15,7 @@ resource "aws_security_group" "tracker_sg" {
         from_port = 5000
         to_port = 5000
         protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [var.app_cidr]
     }
 
     egress {
@@ -33,17 +33,15 @@ resource "aws_instance" "tracker_instance" {
     instance_type = "t3.micro"
     subnet_id = aws_subnet.tracker_public_subnet.id
     vpc_security_group_ids = [aws_security_group.tracker_sg.id]
-    key_name = "tracker-key"
+    key_name = aws_key_pair.tracker_key.key_name
 
-    user_data = <<-EOF
-        #!/bin/bash
-        apt update
-        apt install docker.io -y
-        systemctl start docker
-        docker run -d --name tracker -p 5000:5000 ushamadhurikonda/tracker-app:v0.1.0
-    EOF
 
     tags = { Name = "tracker-instance-tf" }
+}
+
+resource "aws_key_pair" "tracker_key" {
+    key_name = "tracker-key-tf"
+    public_key = file(pathexpand(var.ssh_public_key_path))
 }
 
 output "instance_public_ip" {
