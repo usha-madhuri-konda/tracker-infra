@@ -23,8 +23,10 @@ jobs:
 
       - name: Validate Terraform
         run: |
-          terraform -chdir=terraform init -backend=false
-          terraform -chdir=terraform validate
+          for dir in terraform eks; do
+            terraform -chdir=$dir init -backend=false
+            terraform -chdir=$dir validate
+          done
 
       - name: Set up Helm
         uses: Azure/setup-helm@v5
