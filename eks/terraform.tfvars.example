@@ -1,0 +1,3 @@
+# Copy to terraform.tfvars and set your own address:
+#   curl -s https://checkip.amazonaws.com
+admin_cidr = "203.0.113.10/32"
