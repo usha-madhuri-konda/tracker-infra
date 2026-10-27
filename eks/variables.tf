@@ -35,7 +35,7 @@ variable "admin_cidr" {
 variable "node_instance_type" {
   description = "Instance type of the worker nodes"
   type        = string
-  default     = "t3.medium"
+  default     = "c7i-flex.large"
 }
 
 variable "node_count" {
