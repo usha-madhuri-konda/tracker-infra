@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tracker-config
+data:
+  POSTGRES_HOST: tracker-db
+  POSTGRES_DB: {{ .Values.postgres.database | quote }}
+  ALLOW_REGISTRATION: {{ .Values.config.allowRegistration | quote }}
