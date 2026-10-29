@@ -33,3 +33,9 @@ jobs:
 
       - name: Lint the Helm chart
         run: helm lint helm/tracker-chart
+
+      - name: Lint the Helm chart with each values file
+        run: |
+          for values in values-kind.yaml values-eks.yaml; do
+            helm lint helm/tracker-chart -f helm/tracker-chart/$values
+          done
