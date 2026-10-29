@@ -1,0 +1,6 @@
+storageClass:
+  create: true
+
+postgres:
+  storage:
+    className: gp3
