@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tracker
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/usha-madhuri-konda/tracker-infra.git
+    targetRevision: main
+    path: helm/tracker-chart
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-eks.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tracker
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    SyncOptions:
+      - CreateNamespace=true
