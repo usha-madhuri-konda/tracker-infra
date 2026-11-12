@@ -1,0 +1,4 @@
+# EC2 needs outbound access to pull packages and images; restrict to specific endpoints later.
+AWS-0104 exp:2027-02-10
+# EKS API stays public so kubectl works from a laptop; private endpoint needs a VPN or bastion.
+AWS-0040 exp:2027-02-10
