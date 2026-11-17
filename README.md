@@ -9,7 +9,7 @@ Infrastructure and deployment configuration for [tracker-app](https://github.com
 | `terraform/` | AWS network and one EC2 server: VPC, subnet, security group, key pair, instance |
 | `ansible/` | Configures the server: installs Docker and runs the app and Postgres containers |
 | `helm/tracker-chart/` | Helm chart for running the app on Kubernetes |
-| `kubernetes/` | Plain manifests and a kind cluster config for local testing |
+| `kubernetes/` | kind cluster config for local testing (the chart in `helm/tracker-chart` replaced the plain manifests) |
 
 ## Secrets and local files
 
