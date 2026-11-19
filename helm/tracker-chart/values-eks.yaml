@@ -4,3 +4,6 @@ storageClass:
 postgres:
   storage:
     className: gp3
+
+externalSecrets:
+  enabled: true
