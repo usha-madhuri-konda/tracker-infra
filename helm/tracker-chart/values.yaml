@@ -35,3 +35,12 @@ postgres:
 
 storageClass:
   create: false
+
+externalSecrets:
+  enabled: false
+  region: ap-south-1
+  serviceAccountName: tracker-secrets
+  roleArn: ""
+  refreshInterval: 1h
+  dbPasswordSecret: tracker/postgres-password
+  sessionKeySecret: tracker/secret-key
